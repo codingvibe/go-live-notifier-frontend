@@ -28,7 +28,7 @@ const TwitchAuthResponse = () => {
           setError(err);
         });
     }
-  }, [errorState]);
+  }, [errorState, router.query]);
 
   if (isLoading) {
     return (
