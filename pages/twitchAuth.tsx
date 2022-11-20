@@ -5,12 +5,11 @@ import { forwardTwitchLoginResponse } from '../lib/backend';
 const TwitchAuthResponse = () => {
   const router = useRouter();
   const [errorState, setError] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const { state, code, error } = router.query;
 
   useEffect(() => {
     if(!router.isReady) return;
-    const { state, code, error } = router.query;
-    setLoading(true);
     if (error) {
       setError(error);
     } else if (!state || !code) {
