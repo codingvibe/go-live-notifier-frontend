@@ -1,0 +1,1 @@
+This is the front end for CodingVibe's Go Live Notifier for Twitch. The only supported platforms currently is notably dying platform Twitter.
