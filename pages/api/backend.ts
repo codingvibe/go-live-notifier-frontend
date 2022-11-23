@@ -112,14 +112,13 @@ export const setImages = async (images: ImageDetailsWithId[]): Promise<Response>
 }
 
 export const getTwitterLoginUrl = (): string => {
-  return `${BACKEND_API_URL}/user/twitterLogin`
+  return `${BACKEND_API_URL}/twitterLogin`
 }
 
 export const forwardTwitterLoginResponse = async (state: string, code: string, cookie?: string): Promise<Response> => {
   const options: RequestInit = {
     credentials: 'include'
   };
-  console.log(`looking at cookie ${cookie}`)
   if (cookie) {
     options.headers = { cookie };
   }
