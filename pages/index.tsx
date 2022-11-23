@@ -7,7 +7,7 @@ import GoLiveText from '../components/GoLiveText';
 import { getCookie } from 'cookies-next';
 
 export const getServerSideProps: GetServerSideProps = async({req, res}) => {
-  const cookie = getCookie('token', {req, res}) as string
+  const cookie = `token=${getCookie('token', {req, res})}`
   const loggedIn = await isLoggedIn(cookie);
   if (!loggedIn) {
     return {

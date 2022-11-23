@@ -115,8 +115,15 @@ export const getTwitterLoginUrl = (): string => {
   return `${BACKEND_API_URL}/user/twitterLogin`
 }
 
-export const forwardTwitterLoginResponse = async (state: string, code: string): Promise<Response> => {
-  return fetch(`${BACKEND_API_URL}/user/twitterLoginResponse?state=${state}&code=${code}`, { credentials: 'include' })
+export const forwardTwitterLoginResponse = async (state: string, code: string, cookie?: string): Promise<Response> => {
+  const options: RequestInit = {
+    credentials: 'include'
+  };
+  console.log(`looking at cookie ${cookie}`)
+  if (cookie) {
+    options.headers = { cookie };
+  }
+  return fetch(`${BACKEND_API_URL}/user/twitterLoginResponse?state=${state}&code=${code}`, options)
 }
 
 export type ImageDetails = {
