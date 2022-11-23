@@ -1,53 +1,36 @@
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { forwardTwitchLoginResponse } from '../lib/backend';
+import { forwardTwitchLoginResponse } from './api/backend';
+import { setCookie } from 'cookies-next';
 
-const TwitchAuthResponse = () => {
-  const router = useRouter();
-  const [errorState, setError] = useState(null);
-  const [isLoading, setLoading] = useState(true);
-  const { state, code, error } = router.query;
-
-  useEffect(() => {
-    if(!router.isReady) return;
-    if (error) {
-      setError(error);
-    } else if (!state || !code) {
-      setError("Invalid response from Twitch");
-    } else {
-      forwardTwitchLoginResponse(state as string, code as string)
-        .then(resp => {
-          setLoading(false);
-          if (resp.ok) {
-            window.location.href = '/';
-          }
-        })
-        .catch(err => {
-          setLoading(false);
-          setError(err);
-        });
+export async function getServerSideProps({query, req, res}) {
+  const resp = await forwardTwitchLoginResponse(query["state"], query["code"]);
+  if (resp.ok) {
+    const jwt = await resp.text();
+    setCookie('token', jwt, {req, res})
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
     }
-  }, [errorState, router.query]);
+  }
+  return {
+    props: {
+      loggedIn: resp.ok
+    },
+  };
+}
 
-  if (isLoading) {
+const TwitchAuthResponse = ( { loggedIn }) => {  
+  if (!loggedIn) {
     return (
       <div>
-        Loading...
+        Error logging in with Twitch
       </div>
     )
   }
-
-  if (errorState) {
-    return (
-      <div>
-        Error in Twitch setup: { errorState }
-      </div>
-    )
-  }
-
   return (
     <div>
-      Redirecting back to home...
+      Loading...
     </div>
   )
 };

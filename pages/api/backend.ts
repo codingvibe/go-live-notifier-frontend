@@ -19,7 +19,7 @@ export const getTwitchLoginUrl = (): string => {
 }
 
 export const forwardTwitchLoginResponse = async (state: string, code: string): Promise<Response> => {
-  return fetch(`${BACKEND_API_URL}/twitchLoginResponse?state=${state}&code=${code}`, { credentials: 'include' });
+  return fetch(`${BACKEND_API_URL}/twitchLoginResponse?state=${state}&code=${code}`, { credentials: 'include' })
 }
 
 export const getEnabledPlatforms = async (cookie?: string): Promise<string[]> => {

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { forwardTwitterLoginResponse } from '../lib/backend';
+import { forwardTwitterLoginResponse } from './api/backend';
 
 const TwitterAuthResponse = () => {
   const router = useRouter();

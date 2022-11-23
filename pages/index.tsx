@@ -1,19 +1,13 @@
 import Head from 'next/head'
-import { isLoggedIn, getImages, getTwitchLoginUrl, getTwitterLoginUrl, getEnabledPlatforms, getGoLiveText } from '../lib/backend';
+import { isLoggedIn, getImages, getTwitchLoginUrl, getTwitterLoginUrl, getEnabledPlatforms, getGoLiveText } from './api/backend';
 import Button from '../components/Button';
 import { GetServerSideProps } from 'next'
 import ImageList from '../components/ImageList';
 import GoLiveText from '../components/GoLiveText';
+import { getCookie } from 'cookies-next';
 
-/*
-TODO
-- Allow changes to go live message
-*/
-
-
-export const getServerSideProps: GetServerSideProps = async(context) => {
-  // forward cookie
-  const cookie = context.req.headers.cookie;
+export const getServerSideProps: GetServerSideProps = async({req, res}) => {
+  const cookie = getCookie('token', {req, res}) as string
   const loggedIn = await isLoggedIn(cookie);
   if (!loggedIn) {
     return {

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react';
-import { setImages, ImageDetailsWithId } from "../lib/backend";
+import { setImages, ImageDetailsWithId } from "../pages/api/backend";
 import Button from "./Button";
 import ImageListElement from "./ImageListElement";
 import PlusButton from './PlusButton';

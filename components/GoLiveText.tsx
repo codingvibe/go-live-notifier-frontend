@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { setGoLiveText } from "../lib/backend";
+import { setGoLiveText } from "../pages/api/backend";
 import SaveButton from './SaveButton';
 
 const GoLiveText = ({ initial }: { initial: string }) => {
