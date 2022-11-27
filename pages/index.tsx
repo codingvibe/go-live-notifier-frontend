@@ -1,14 +1,13 @@
 import Head from 'next/head'
-import { isLoggedIn, getImages, getTwitchLoginUrl, getTwitterLoginUrl, getEnabledPlatforms, getGoLiveText } from './api/backend';
+import { isLoggedIn, getImages, getTwitchLoginUrl, getTwitterLoginUrl, getEnabledPlatforms, getGoLiveText, ImageDetailsWithId, setImages } from './api/backend';
 import Button from '../components/Button';
 import { GetServerSideProps } from 'next'
 import ImageList from '../components/ImageList';
 import GoLiveText from '../components/GoLiveText';
-import { getCookie } from 'cookies-next';
 
-export const getServerSideProps: GetServerSideProps = async({req, res}) => {
-  const cookie = `token=${getCookie('token', {req, res})}`
-  const loggedIn = await isLoggedIn(cookie);
+export const getServerSideProps: GetServerSideProps = async({req}) => {
+  // COME UP WITH AN AUTHED BACKEND USING THE TOKEN/COOKIE
+  const loggedIn = await isLoggedIn(req.cookies['token']);
   if (!loggedIn) {
     return {
       redirect: {
@@ -17,9 +16,9 @@ export const getServerSideProps: GetServerSideProps = async({req, res}) => {
       },
     }
   }
-  const platforms = await getEnabledPlatforms(cookie);
-  const images = await getImages(cookie);
-  const goLiveText = await getGoLiveText(cookie);
+  const platforms = await getEnabledPlatforms(req.cookies['token']);
+  const images = await getImages(req.cookies['token']);
+  const goLiveText = await getGoLiveText(req.cookies['token']);
   return {
     props: {
       loggedIn,
@@ -30,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async({req, res}) => {
   };
 }
 
-export default function Home( { images, goLiveText, platforms } ) {
+export default function Home( { images, goLiveText, platforms, setImagesWithToken } ) {
   return (
     <div className="container">
       <Head>

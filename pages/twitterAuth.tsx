@@ -1,9 +1,7 @@
 import { forwardTwitterLoginResponse } from './api/backend';
-import { getCookie } from 'cookies-next';
 
 export async function getServerSideProps({query, req, res}) {
-  const cookie = `token=${getCookie('token', {req, res})}`
-  const resp = await forwardTwitterLoginResponse(query["state"], query["code"], cookie);
+  const resp = await forwardTwitterLoginResponse(query["state"], query["code"], req.cookies['token']);
   console.log(resp);
   if (resp.ok) {
     return {

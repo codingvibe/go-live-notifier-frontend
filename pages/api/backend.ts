@@ -1,11 +1,13 @@
 const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL
 
-export const isLoggedIn = async (cookie?: string): Promise<boolean> => {
+export const isLoggedIn = async (token?: string): Promise<boolean> => {
   const options: RequestInit = {
     credentials: 'include'
   };
-  if (cookie) {
-    options.headers = { cookie };
+  if (token) {
+    options.headers = {
+      'Authorization': token
+    };
   }
   const resp = await fetch(`${BACKEND_API_URL}/user/loggedIn`, options);
   if (resp.status == 200) {
@@ -22,12 +24,14 @@ export const forwardTwitchLoginResponse = async (state: string, code: string): P
   return fetch(`${BACKEND_API_URL}/twitchLoginResponse?state=${state}&code=${code}`, { credentials: 'include' })
 }
 
-export const getEnabledPlatforms = async (cookie?: string): Promise<string[]> => {
+export const getEnabledPlatforms = async (token?: string): Promise<string[]> => {
   const options: RequestInit = {
     credentials: 'include'
   };
-  if (cookie) {
-    options.headers = { cookie };
+  if (token) {
+    options.headers = {
+      'Authorization': token
+    };
   }
   return fetch(`${BACKEND_API_URL}/user/connections`, options).then(res => {
     if (res.ok) {
@@ -44,12 +48,14 @@ export const deletePlatform = async (platform: string): Promise<Response> => {
   });
 }
 
-export const getImages = async (cookie?: string): Promise<ImageDetailsWithId[]> => {
+export const getImages = async (token?: string): Promise<ImageDetailsWithId[]> => {
   const options: RequestInit = {
     credentials: 'include'
   };
-  if (cookie) {
-    options.headers = { cookie };
+  if (token) {
+    options.headers = {
+      'Authorization': token
+    };
   }
   return fetch(`${BACKEND_API_URL}/user/images`, options)
     .then(res => {
@@ -60,12 +66,14 @@ export const getImages = async (cookie?: string): Promise<ImageDetailsWithId[]> 
     });
 }
 
-export const getGoLiveText = async (cookie?: string): Promise<ImageDetailsWithId[]> => {
+export const getGoLiveText = async (token?: string): Promise<ImageDetailsWithId[]> => {
   const options: RequestInit = {
     credentials: 'include'
   };
-  if (cookie) {
-    options.headers = { cookie };
+  if (token) {
+    options.headers = {
+      'Authorization': token
+    };
   }
   return fetch(`${BACKEND_API_URL}/user/goLiveText`, options)
     .then(res => {
@@ -79,10 +87,11 @@ export const getGoLiveText = async (cookie?: string): Promise<ImageDetailsWithId
     });
 }
 
-export const setGoLiveText = async (goLiveText): Promise<Response> => {
+export const setGoLiveText = async (goLiveText: string, token: string): Promise<Response> => {
   return fetch(`${BACKEND_API_URL}/user/goLiveText`,{
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': token
     },
     method: 'PUT',
     body: JSON.stringify({
@@ -92,11 +101,15 @@ export const setGoLiveText = async (goLiveText): Promise<Response> => {
   });
 }
 
-export const addImages = async (images: ImageDetails[]): Promise<Response> => {
+export const addImages = async (images: ImageDetails[], token: string): Promise<Response> => {
   return fetch(`${BACKEND_API_URL}/user/images`,{
     method: 'POST',
     body: JSON.stringify(images),
-    credentials: 'include'
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    },
   });
 }
 
@@ -107,7 +120,7 @@ export const setImages = async (images: ImageDetailsWithId[]): Promise<Response>
     },
     method: 'PUT',
     body: JSON.stringify(images),
-    credentials: 'include'
+    credentials: 'include',
   });
 }
 
@@ -115,12 +128,14 @@ export const getTwitterLoginUrl = (): string => {
   return `${BACKEND_API_URL}/twitterLogin`
 }
 
-export const forwardTwitterLoginResponse = async (state: string, code: string, cookie?: string): Promise<Response> => {
+export const forwardTwitterLoginResponse = async (state: string, code: string, token?: string): Promise<Response> => {
   const options: RequestInit = {
     credentials: 'include'
   };
-  if (cookie) {
-    options.headers = { cookie };
+  if (token) {
+    options.headers = {
+      'Authorization': token
+    };
   }
   return fetch(`${BACKEND_API_URL}/user/twitterLoginResponse?state=${state}&code=${code}`, options)
 }
