@@ -1,3 +1,5 @@
+import { StringDecoder } from "string_decoder";
+
 const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL
 
 export const isLoggedIn = async (token?: string): Promise<boolean> => {
@@ -87,11 +89,10 @@ export const getGoLiveText = async (token?: string): Promise<ImageDetailsWithId[
     });
 }
 
-export const setGoLiveText = async (goLiveText: string, token: string): Promise<Response> => {
+export const setGoLiveText = async (goLiveText: StringDecoder): Promise<Response> => {
   return fetch(`${BACKEND_API_URL}/user/goLiveText`,{
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
+      'Content-Type': 'application/json'
     },
     method: 'PUT',
     body: JSON.stringify({
