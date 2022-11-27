@@ -89,7 +89,7 @@ export const getGoLiveText = async (token?: string): Promise<ImageDetailsWithId[
     });
 }
 
-export const setGoLiveText = async (goLiveText: StringDecoder): Promise<Response> => {
+export const setGoLiveText = async (goLiveText: string): Promise<Response> => {
   return fetch(`${BACKEND_API_URL}/user/goLiveText`,{
     headers: {
       'Content-Type': 'application/json'
