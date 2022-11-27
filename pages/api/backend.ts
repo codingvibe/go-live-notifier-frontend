@@ -89,10 +89,11 @@ export const getGoLiveText = async (token?: string): Promise<ImageDetailsWithId[
     });
 }
 
-export const setGoLiveText = async (goLiveText: string): Promise<Response> => {
+export const setGoLiveText = async (goLiveText: string, token: string): Promise<Response> => {
   return fetch(`${BACKEND_API_URL}/user/goLiveText`,{
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': token
     },
     method: 'PUT',
     body: JSON.stringify({
@@ -114,10 +115,11 @@ export const addImages = async (images: ImageDetails[], token: string): Promise<
   });
 }
 
-export const setImages = async (images: ImageDetailsWithId[]): Promise<Response> => {
+export const setImages = async (images: ImageDetailsWithId[], token: string): Promise<Response> => {
   return fetch(`${BACKEND_API_URL}/user/images`,{
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': token
     },
     method: 'PUT',
     body: JSON.stringify(images),

@@ -5,7 +5,7 @@ import ImageListElement from "./ImageListElement";
 import PlusButton from './PlusButton';
 import SaveButton from './SaveButton';
 
-const ImageList = ({ images }: { images: ImageDetailsWithId[] }) => {let currentImages = images || [];
+const ImageList = ({ images, token }: { images: ImageDetailsWithId[], token: string }) => {let currentImages = images || [];
   const router = useRouter();
   const [imagesForDeletion, setImagesForDeletion] = useState([]);
   const DEFAULT_ALT_TEXT = "Fill me in";
@@ -15,7 +15,7 @@ const ImageList = ({ images }: { images: ImageDetailsWithId[] }) => {let current
     const imageUpdates = currentImages.filter(image => 
       !imagesForDeletion.includes(image.id) && image.url != DEFAULT_URL
     );
-    const resp = await setImages(imageUpdates);
+    const resp = await setImages(imageUpdates, token);
     if (resp.ok) {
       setImagesForDeletion([]);
       router.reload();

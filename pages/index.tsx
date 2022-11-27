@@ -7,7 +7,8 @@ import GoLiveText from '../components/GoLiveText';
 
 export const getServerSideProps: GetServerSideProps = async({req}) => {
   // COME UP WITH AN AUTHED BACKEND USING THE TOKEN/COOKIE
-  const loggedIn = await isLoggedIn(req.cookies['token']);
+  const authToken = req.cookies['token']
+  const loggedIn = await isLoggedIn(authToken);
   if (!loggedIn) {
     return {
       redirect: {
@@ -16,20 +17,21 @@ export const getServerSideProps: GetServerSideProps = async({req}) => {
       },
     }
   }
-  const platforms = await getEnabledPlatforms(req.cookies['token']);
-  const images = await getImages(req.cookies['token']);
-  const goLiveText = await getGoLiveText(req.cookies['token']);
+  const platforms = await getEnabledPlatforms(authToken);
+  const images = await getImages(authToken);
+  const goLiveText = await getGoLiveText(authToken);
   return {
     props: {
       loggedIn,
       images,
       goLiveText,
-      platforms
+      platforms,
+      authToken
     },
   };
 }
 
-export default function Home( { images, goLiveText, platforms, setImagesWithToken } ) {
+export default function Home( { images, goLiveText, platforms, authToken } ) {
   return (
     <div className="container">
       <Head>
@@ -44,9 +46,9 @@ export default function Home( { images, goLiveText, platforms, setImagesWithToke
           <Button disabled={true} text="Already connected!" logo="/twitter-logo.svg" onClick={() => {}}/>
         }
         <h2>Step 2: Add your images</h2>
-        <ImageList images={images}/>
+        <ImageList images={images} token={authToken}/>
         <h2>Step 3: Set your go live text</h2>
-        <GoLiveText initial={goLiveText}/>
+        <GoLiveText initial={goLiveText} token={authToken}/>
         <h2>Step 4: Go stream and we'll take care of the rest!</h2>
       </main>
 

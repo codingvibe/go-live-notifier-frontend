@@ -2,10 +2,10 @@ import { useState } from "react";
 import { setGoLiveText } from "../pages/api/backend";
 import SaveButton from './SaveButton';
 
-const GoLiveText = ({ initial }: { initial: string }) => {
+const GoLiveText = ({ initial, token }: { initial: string, token: string }) => {
   const [goLiveText, updateGoLiveText] = useState(initial);
   const saveUpdate = async () => {
-    const resp = await setGoLiveText(goLiveText);
+    const resp = await setGoLiveText(goLiveText, token);
     if (resp.ok) {
       // display something
     }
